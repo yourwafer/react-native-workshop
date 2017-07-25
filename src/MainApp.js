@@ -5,6 +5,7 @@ import ArticleView from './ArticleList';
 const {
 	View,
 	StyleSheet,
+	ScrollView
 } = ReactNative;
 
 export default class extends React.PureComponent {
@@ -18,9 +19,9 @@ export default class extends React.PureComponent {
 		return (
 			<View style={styles.container}>
 				<NavContainer />
-				<View style={styles.articleList}>
+				<ScrollView style={styles.articleList}>
 					{[...Array(10).keys()].map((i)=><ArticleView key={i} article={article} />)}
-				</View>
+				</ScrollView>
 			</View>
 		);
 	}
