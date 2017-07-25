@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactNative from 'react-native';
+import axios from 'axios';
 import NavContainer from './NavContainer';
 import ArticleView from './ArticleList';
+import { getSearchArticleUrl } from './Constant';
 const {
 	View,
 	StyleSheet,
@@ -10,24 +12,29 @@ const {
 
 export default class extends React.PureComponent {
 
-	state = { subject: 'index' };
+	constructor(props){
+		super(props);
+		this.state = { subject: 'index', articles: [] };
+		this._getArticles('index');
+	}
 
 	_selectSubject = (subject) => {
 		this.setState({ subject });
+		this._getArticles(subject);
 	};
 
+	_getArticles(subject) {
+		axios.get(getSearchArticleUrl(subject)).then(response => response.data.data.data).then(articles => {
+			this.setState({ articles });
+		});
+	}
+
 	render() {
-		const article = {
-			pic_mid: 'http://file5.u148.net/2017/07/minimg/149966756391915J01JHDN.jpg',
-			category: 3,
-			title: '看剧的时候千万不要开弹幕啊啊啊……',
-			summary: '我朋友小学时候的作文：我们都应该热爱动物，因为它们都很好吃。'
-		};
 		return (
 			<View style={styles.container}>
 				<NavContainer subject={this.state.subject} select={this._selectSubject} />
 				<ScrollView style={styles.articleList}>
-					{[...Array(10).keys()].map((i)=><ArticleView key={i} article={article} />)}
+					{this.state.articles.map((article) => <ArticleView key={article.id} article={article} />)}
 				</ScrollView>
 			</View>
 		);
