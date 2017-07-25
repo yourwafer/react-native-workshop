@@ -9,6 +9,13 @@ const {
 } = ReactNative;
 
 export default class extends React.PureComponent {
+
+	state = { subject: 'index' };
+
+	_selectSubject = (subject) => {
+		this.setState({ subject });
+	};
+
 	render() {
 		const article = {
 			pic_mid: 'http://file5.u148.net/2017/07/minimg/149966756391915J01JHDN.jpg',
@@ -18,7 +25,7 @@ export default class extends React.PureComponent {
 		};
 		return (
 			<View style={styles.container}>
-				<NavContainer />
+				<NavContainer subject={this.state.subject} select={this._selectSubject} />
 				<ScrollView style={styles.articleList}>
 					{[...Array(10).keys()].map((i)=><ArticleView key={i} article={article} />)}
 				</ScrollView>
